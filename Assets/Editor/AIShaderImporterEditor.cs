@@ -10,6 +10,10 @@ sealed class AIShaderImporterEditor : ScriptedImporterEditor
     SerializedProperty _prompt;
     SerializedProperty _cached;
 
+    const string ApiKeyErrorText =
+      "API Key hasn't been set. Please check the project settings " +
+      "(Edit > Project Settings > AI Shader > API Key).";
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -19,11 +23,22 @@ sealed class AIShaderImporterEditor : ScriptedImporterEditor
 
     public override void OnInspectorGUI()
     {
+        var hasApiKey = !string.IsNullOrEmpty(AIShaderSettings.instance.apiKey);
+
         serializedObject.Update();
+
         EditorGUILayout.PropertyField(_prompt);
+
+        EditorGUI.BeginDisabledGroup(!hasApiKey);
         if (GUILayout.Button("Generate")) Regenerate();
+        EditorGUI.EndDisabledGroup();
+
+        if (!hasApiKey)
+            EditorGUILayout.HelpBox(ApiKeyErrorText, MessageType.Error);
+
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(_cached);
+
         serializedObject.ApplyModifiedProperties();
         ApplyRevertGUI();
     }

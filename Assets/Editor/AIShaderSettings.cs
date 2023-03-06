@@ -7,7 +7,7 @@ namespace AIShader {
           FilePathAttribute.Location.ProjectFolder)]
 public sealed class AIShaderSettings : ScriptableSingleton<AIShaderSettings>
 {
-    public string apiKey = "SET YOUR API KEY";
+    public string apiKey = null;
     public void Save() => Save(true);
     void OnDisable() => Save();
 }
