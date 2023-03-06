@@ -10,10 +10,17 @@ sealed class AutoShaderImporter : ScriptedImporter
 
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        var form = new WWWForm();
+        var txt = "";
 
-        using (var post = UnityWebRequest.Post("https://www.google.com", form))
+        var data = "{ \"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Create an unlit shader for Unity. It gets two input textures and overlays one texture to another. The opacity value should be specified via a float property. Please dont add any note nor explanation to the response. I only need the code body.\"}] }";
+        var raw = System.Text.Encoding.UTF8.GetBytes(data);
+
+        using (var post = UnityWebRequest.Put("https://api.openai.com/v1/chat/completions", raw))
         {
+            post.method = "POST";
+            post.SetRequestHeader("Content-Type", "application/json");
+            post.SetRequestHeader("Authorization", "Bearer " + AutoShaderSettings.instance.apiKey);
+
             var req = post.SendWebRequest();
 
             var progress = 0.0f;
@@ -22,7 +29,7 @@ sealed class AutoShaderImporter : ScriptedImporter
             {
                 if (req.isDone)
                 {
-                    Debug.Log(post.responseCode);
+                    txt = post.downloadHandler.text;
                     break;
                 }
 
@@ -34,8 +41,13 @@ sealed class AutoShaderImporter : ScriptedImporter
 
         EditorUtility.ClearProgressBar();
 
+        //var txt = System.IO.File.ReadAllText("Sample.json");
+        var res = JsonUtility.FromJson<Response>(txt);
+        var code = res.choices[0].message.content;
 
-        var shader = ShaderUtil.CreateShaderAsset(ctx, SampleResponse, false);
+        Debug.Log(code);
+
+        var shader = ShaderUtil.CreateShaderAsset(ctx, code, false);
         ctx.AddObjectToAsset("MainAsset", shader);
         ctx.SetMainObject(shader);
     }
