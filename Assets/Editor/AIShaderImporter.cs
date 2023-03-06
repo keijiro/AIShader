@@ -9,27 +9,22 @@ sealed class AIShaderImporter : ScriptedImporter
 {
     public const string Extension = "aishader";
 
-    [SerializeField, TextArea] string _prompt = "It gets two input textures and overlays one texture to another. The opacity value should be specified via a float property.";
+    #pragma warning disable CS0414
 
-    string WrapPrompt(string input)
-      => "Create an unlit shader for Unity. " + _prompt + " Please don't add any note nor explanation to the response. I only need the code body.";
+    [SerializeField, TextArea(3, 20)]
+    string _prompt = "It gets two input textures and overlays one texture to another. The opacity value should be specified via a float property.";
+
+    [SerializeField, TextArea(3, 20)]
+    string _cached = null;
+
+    #pragma warning restore CS0414
 
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        var json = OpenAIUtil.InvokeChat(WrapPrompt(_prompt));
-        var response = JsonUtility.FromJson<OpenAI.Response>(json);
-        var code = response.choices[0].message.content;
-
-        Debug.Log(code);
-
-        var shader = ShaderUtil.CreateShaderAsset(ctx, code, false);
+        var shader = ShaderUtil.CreateShaderAsset(ctx, _cached, false);
         ctx.AddObjectToAsset("MainAsset", shader);
         ctx.SetMainObject(shader);
     }
-
-    [MenuItem("Assets/Create/AI Shader")]
-    public static void CreateNewAsset()
-      => ProjectWindowUtil.CreateAssetWithContent("New AI Shader." + Extension, "");
 }
 
 } // namespace AIShader
