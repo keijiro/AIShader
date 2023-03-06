@@ -1,4 +1,4 @@
-# AIShader
+# AI Shader
 
 ![GIF](https://user-images.githubusercontent.com/343936/223034386-cf69f2a2-d8ec-4537-9f1b-37051542b1cd.gif)
 
