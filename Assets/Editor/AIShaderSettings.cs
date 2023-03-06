@@ -1,23 +1,25 @@
 using UnityEngine;
 using UnityEditor;
 
+namespace AIShader {
+
 [System.Serializable]
-[FilePath("UserSettings/AutoShaderSettings.asset", FilePathAttribute.Location.ProjectFolder)]
-public sealed class AutoShaderSettings : ScriptableSingleton<AutoShaderSettings>
+[FilePath("UserSettings/AIShaderSettings.asset", FilePathAttribute.Location.ProjectFolder)]
+public sealed class AIShaderSettings : ScriptableSingleton<AIShaderSettings>
 {
     public string apiKey = "SET YOUR API KEY";
     public void Save() => Save(true);
     void OnDisable() => Save();
 }
 
-sealed class AutoShaderSettingsProvider : SettingsProvider
+sealed class AIShaderSettingsProvider : SettingsProvider
 {
-    public AutoShaderSettingsProvider()
-      : base("Project/Auto Shader", SettingsScope.Project) {}
+    public AIShaderSettingsProvider()
+      : base("Project/AI Shader", SettingsScope.Project) {}
 
     public override void OnGUI(string search)
     {
-        var settings = AutoShaderSettings.instance;
+        var settings = AIShaderSettings.instance;
         var key = settings.apiKey;
         EditorGUI.BeginChangeCheck();
         key = EditorGUILayout.TextField("API Key", key);
@@ -30,5 +32,7 @@ sealed class AutoShaderSettingsProvider : SettingsProvider
 
     [SettingsProvider]
     public static SettingsProvider CreateCustomSettingsProvider()
-      => new AutoShaderSettingsProvider();
+      => new AIShaderSettingsProvider();
 }
+
+} // namespace AIShader

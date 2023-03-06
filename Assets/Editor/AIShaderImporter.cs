@@ -3,10 +3,12 @@ using UnityEngine.Networking;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 
+namespace AIShader {
+
 [ScriptedImporter(1, Extension)]
-sealed class AutoShaderImporter : ScriptedImporter
+sealed class AIShaderImporter : ScriptedImporter
 {
-    public const string Extension = "autoshader";
+    public const string Extension = "aishader";
 
     public override void OnImportAsset(AssetImportContext ctx)
     {
@@ -19,7 +21,7 @@ sealed class AutoShaderImporter : ScriptedImporter
         {
             post.method = "POST";
             post.SetRequestHeader("Content-Type", "application/json");
-            post.SetRequestHeader("Authorization", "Bearer " + AutoShaderSettings.instance.apiKey);
+            post.SetRequestHeader("Authorization", "Bearer " + AIShaderSettings.instance.apiKey);
 
             var req = post.SendWebRequest();
 
@@ -33,7 +35,7 @@ sealed class AutoShaderImporter : ScriptedImporter
                     break;
                 }
 
-                EditorUtility.DisplayProgressBar("Auto Shader Importer", "Generating...", progress);
+                EditorUtility.DisplayProgressBar("AI Shader Importer", "Generating...", progress);
                 System.Threading.Thread.Sleep(100);
                 progress += 0.01f;
             }
@@ -42,7 +44,7 @@ sealed class AutoShaderImporter : ScriptedImporter
         EditorUtility.ClearProgressBar();
 
         //var txt = System.IO.File.ReadAllText("Sample.json");
-        var res = JsonUtility.FromJson<Response>(txt);
+        var res = JsonUtility.FromJson<OpenAI.Response>(txt);
         var code = res.choices[0].message.content;
 
         Debug.Log(code);
@@ -52,3 +54,5 @@ sealed class AutoShaderImporter : ScriptedImporter
         ctx.SetMainObject(shader);
     }
 }
+
+} // namespace AIShader
