@@ -3,8 +3,8 @@ using UnityEditor;
 
 namespace AIShader {
 
-[System.Serializable]
-[FilePath("UserSettings/AIShaderSettings.asset", FilePathAttribute.Location.ProjectFolder)]
+[FilePath("UserSettings/AIShaderSettings.asset",
+          FilePathAttribute.Location.ProjectFolder)]
 public sealed class AIShaderSettings : ScriptableSingleton<AIShaderSettings>
 {
     public string apiKey = "SET YOUR API KEY";

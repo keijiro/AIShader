@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 79df3e3a3bb404415a4fef927b35961b
+guid: 9d97d6462f3c74080b067685a26d6188
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -8,3 +8,5 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 7ff5ebea90ada4fe5aea1ff6169301d4, type: 3}
+  _prompt: It gets two input textures and overlays one texture to another. The opacity
+    value should be specified via a float property.

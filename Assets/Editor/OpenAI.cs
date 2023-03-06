@@ -1,23 +1,42 @@
 namespace AIShader.OpenAI
 {
+    public static class Api
+    {
+        public const string Url = "https://api.openai.com/v1/chat/completions";
+    }
+
     [System.Serializable]
-    public struct Message
+    public struct ResponseMessage
     {
         public string role;
         public string content;
     }
 
     [System.Serializable]
-    public struct Choice
+    public struct ResponseChoice
     {
         public int index;
-        public Message message;
+        public ResponseMessage message;
     }
 
     [System.Serializable]
     public struct Response
     {
         public string id;
-        public Choice[] choices;
+        public ResponseChoice[] choices;
+    }
+
+    [System.Serializable]
+    public struct RequestMessage
+    {
+        public string role;
+        public string content;
+    }
+
+    [System.Serializable]
+    public struct Request
+    {
+        public string model;
+        public RequestMessage[] messages;
     }
 }
