@@ -8,18 +8,17 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 7ff5ebea90ada4fe5aea1ff6169301d4, type: 3}
-  _prompt: It gets two input textures and overlays one texture to another. The opacity
-    value should be specified via a float property.
-  _cached: "\n\nShader \"Custom/OverlayShader\" {\n\tProperties {\n\t\t_MainTex (\"Base
-    Texture\", 2D) = \"white\" {}\n\t\t_OverlayTex (\"Overlay Texture\", 2D) = \"white\"
-    {}\n\t\t_Opacity (\"Opacity\", Range(0,1)) = 1.0\n\t}\n\tSubShader {\n\t\tTags
-    {\"Queue\"=\"Transparent\" \"RenderType\"=\"Opaque\"}\n\t\tPass {\n\t\t\tCGPROGRAM\n\t\t\t#pragma
-    vertex vert\n\t\t\t#pragma fragment frag\n\n\t\t\t#include \"UnityCG.cginc\"\n\n\t\t\tstruct
-    appdata {\n\t\t\t\tfloat4 vertex : POSITION;\n\t\t\t\tfloat2 uv : TEXCOORD0;\n\t\t\t};\n\t\t\t\n\t\t\tstruct
-    v2f {\n\t\t\t\tfloat2 uv : TEXCOORD0;\n\t\t\t\tfloat4 vertex : SV_POSITION;\n\t\t\t};\n\n\t\t\tsampler2D
-    _MainTex;\n\t\t\tsampler2D _OverlayTex;\n\t\t\tfloat _Opacity;\n\n\t\t\tv2f vert
-    (appdata v) {\n\t\t\t\tv2f o;\n\t\t\t\to.vertex = UnityObjectToClipPos(v.vertex);\n\t\t\t\to.uv
-    = v.uv;\n\t\t\t\treturn o;\n\t\t\t}\n\n\t\t\tfixed4 frag (v2f i) : SV_Target{\n\t\t\t\tfixed4
-    baseCol = tex2D(_MainTex, i.uv);\n\t\t\t\tfixed4 overlayCol = tex2D(_OverlayTex,
-    i.uv);\n\t\t\t\tfixed4 result = lerp(baseCol, overlayCol, _Opacity);\n\t\t\t\treturn
-    result;\n\t\t\t}\n\t\t\tENDCG\n\t\t}\n\t}\n\tFallback \"Diffuse\"\n}"
+  _prompt: Simple solid fill shader. The color is exposed as a property.
+  _cached: "\n\nShader \"Custom/UnlitSolidColor\"\n{\n    Properties\n    {\n       
+    _Color (\"Color\", Color) = (1,1,1,1)\n    }\n \n    SubShader\n    {\n       
+    Tags {\"Queue\"=\"Background\" \"RenderType\"=\"Opaque\"}\n \n        Pass\n       
+    {\n            CGPROGRAM\n            #pragma vertex vert\n            #pragma
+    fragment frag\n \n            // vertex shader implementation\n            struct
+    appdata\n            {\n                float4 vertex : POSITION;\n           
+    };\n \n            struct v2f\n            {\n                float4 vertex :
+    SV_POSITION;\n            };\n \n            v2f vert (appdata v)\n           
+    {\n                v2f o;\n                o.vertex = UnityObjectToClipPos(v.vertex);\n               
+    return o;\n            }\n \n            // pixel shader implementation\n           
+    fixed4 _Color;\n            fixed4 frag (v2f i) : SV_Target\n            {\n               
+    return _Color;\n            }\n            ENDCG\n        }\n    }\n    FallBack
+    \"Diffuse\"\n}"

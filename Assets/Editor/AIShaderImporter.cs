@@ -12,7 +12,7 @@ sealed class AIShaderImporter : ScriptedImporter
     #pragma warning disable CS0414
 
     [SerializeField, TextArea(3, 20)]
-    string _prompt = "It gets two input textures and overlays one texture to another. The opacity value should be specified via a float property.";
+    string _prompt = "Simple solid fill shader. The color is exposed as a property.";
 
     [SerializeField, TextArea(3, 20)]
     string _cached = null;
