@@ -25,6 +25,10 @@ sealed class AIShaderImporter : ScriptedImporter
         ctx.AddObjectToAsset("MainAsset", shader);
         ctx.SetMainObject(shader);
     }
+
+    [MenuItem("Assets/Create/AI Shader")]
+    static void CreateNewAsset()
+      => ProjectWindowUtil.CreateAssetWithContent("New AI Shader." + Extension, "");
 }
 
 } // namespace AIShader

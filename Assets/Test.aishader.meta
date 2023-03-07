@@ -9,16 +9,15 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 7ff5ebea90ada4fe5aea1ff6169301d4, type: 3}
   _prompt: Simple solid fill shader. The color is exposed as a property.
-  _cached: "\n\nShader \"Custom/UnlitSolidColor\"\n{\n    Properties\n    {\n       
-    _Color (\"Color\", Color) = (1,1,1,1)\n    }\n \n    SubShader\n    {\n       
-    Tags {\"Queue\"=\"Background\" \"RenderType\"=\"Opaque\"}\n \n        Pass\n       
-    {\n            CGPROGRAM\n            #pragma vertex vert\n            #pragma
-    fragment frag\n \n            // vertex shader implementation\n            struct
+  _cached: "\n\nShader \"Unlit/SolidFill\"\n{\n    Properties\n    {\n        _Color(\"Color\",
+    Color) = (1,1,1,1)\n    }\n \n    SubShader\n    {\n        Tags { \"RenderType\"=\"Opaque\"
+    }\n        LOD 100\n \n        Pass\n        {\n            CGPROGRAM\n           
+    #pragma vertex vert\n            #pragma fragment frag\n \n            struct
     appdata\n            {\n                float4 vertex : POSITION;\n           
     };\n \n            struct v2f\n            {\n                float4 vertex :
-    SV_POSITION;\n            };\n \n            v2f vert (appdata v)\n           
-    {\n                v2f o;\n                o.vertex = UnityObjectToClipPos(v.vertex);\n               
-    return o;\n            }\n \n            // pixel shader implementation\n           
-    fixed4 _Color;\n            fixed4 frag (v2f i) : SV_Target\n            {\n               
+    SV_POSITION;\n            };\n \n            float4 _Color;\n \n            v2f
+    vert (appdata v)\n            {\n                v2f o;\n                o.vertex
+    = UnityObjectToClipPos(v.vertex);\n                return o;\n            }\n
+    \n            fixed4 frag (v2f i) : SV_Target\n            {\n               
     return _Color;\n            }\n            ENDCG\n        }\n    }\n    FallBack
     \"Diffuse\"\n}"

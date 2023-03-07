@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Test
   m_Shader: {fileID: -6465566751694194690, guid: 9d97d6462f3c74080b067685a26d6188, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -77,9 +80,14 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StripeInterval: 0.51
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0, g: 0.764151, b: 0.5381574, a: 1}
+    - _Color1: {r: 0.9339623, g: 0, b: 0, a: 1}
+    - _Color2: {r: 0, g: 0.7945037, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MainColor: {r: 0.6509434, g: 0.16273585, b: 0.16273585, a: 1}
+    - _StripeColor: {r: 0.028702382, g: 0.09595943, b: 0.4056604, a: 1}
   m_BuildTextureStacks: []

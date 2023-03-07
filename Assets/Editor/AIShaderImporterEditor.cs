@@ -7,12 +7,29 @@ namespace AIShader {
 [CustomEditor(typeof(AIShaderImporter))]
 sealed class AIShaderImporterEditor : ScriptedImporterEditor
 {
+    #region Private members
+
     SerializedProperty _prompt;
     SerializedProperty _cached;
+
+    bool IsApiKeyOk
+      => !string.IsNullOrEmpty(AIShaderSettings.instance.apiKey);
 
     const string ApiKeyErrorText =
       "API Key hasn't been set. Please check the project settings " +
       "(Edit > Project Settings > AI Shader > API Key).";
+
+    static string WrapPrompt(string input)
+      => "Create an unlit shader for Unity. " + input +
+         " Don't include any note nor explanation in the response." +
+         " I only need the code body.";
+
+    void Regenerate()
+      => _cached.stringValue = OpenAIUtil.InvokeChat(WrapPrompt(_prompt.stringValue));
+
+    #endregion
+
+    #region ScriptedImporterEditor overrides
 
     public override void OnEnable()
     {
@@ -23,42 +40,30 @@ sealed class AIShaderImporterEditor : ScriptedImporterEditor
 
     public override void OnInspectorGUI()
     {
-        var hasApiKey = !string.IsNullOrEmpty(AIShaderSettings.instance.apiKey);
-
+        // Intro
         serializedObject.Update();
 
+        // Prompt text area
         EditorGUILayout.PropertyField(_prompt);
 
-        EditorGUI.BeginDisabledGroup(!hasApiKey);
+        // "Generate" button
+        EditorGUI.BeginDisabledGroup(!IsApiKeyOk);
         if (GUILayout.Button("Generate")) Regenerate();
         EditorGUI.EndDisabledGroup();
 
-        if (!hasApiKey)
-            EditorGUILayout.HelpBox(ApiKeyErrorText, MessageType.Error);
+        // Missing API key error
+        if (!IsApiKeyOk) EditorGUILayout.HelpBox(ApiKeyErrorText, MessageType.Error);
 
+        // Cached code text area
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(_cached);
 
+        // Outro
         serializedObject.ApplyModifiedProperties();
         ApplyRevertGUI();
     }
 
-    static string WrapPrompt(string input)
-      => "Create an unlit shader for Unity. " + input +
-         " Please don't add any note nor explanation to the response." +
-         " I only need the code body.";
-
-    void Regenerate()
-    {
-        var json = OpenAIUtil.InvokeChat(WrapPrompt(_prompt.stringValue));
-        var response = JsonUtility.FromJson<OpenAI.Response>(json);
-        _cached.stringValue = response.choices[0].message.content;
-    }
-
-    [MenuItem("Assets/Create/AI Shader")]
-    public static void CreateNewAsset()
-      => ProjectWindowUtil.CreateAssetWithContent
-           ("New AI Shader." + AIShaderImporter.Extension, "");
+    #endregion
 }
 
 } // namespace AIShader
