@@ -11,4 +11,4 @@ Please generate it on your [account page](https://platform.openai.com/account/ap
 and set it on the Project Settings page (Edit > Project Settings > AI Shader > API Key).
 
 **CAUTION** - The API key is stored in `UserSettings/AIShaderSettings.asset`.
-You must exclude the directory when sharing your project with others.
+You must exclude the directory, when sharing your project with others.
